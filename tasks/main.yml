@@ -1,0 +1,7 @@
+- name: create service from template
+  become: true
+  template: src=files/zabbix-agent.service.j2 dest=/etc/systemd/system/zabbix-agent.service owner=root group=wheel mode=0644
+
+- name: start zabbix service
+  become: yes
+  service: name=zabbix-agent enabled=yes state=started
