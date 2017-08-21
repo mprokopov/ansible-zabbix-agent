@@ -9,7 +9,8 @@ ExecStartPre=-/usr/bin/docker rm zabbix-agent
 ExecStart=/usr/bin/docker run  --name=zabbix-agent \
 --privileged \
 -p 10050:10050 \
--v /:/rootfs  -v /var/run:/var/run \
+- /dev/xvda1:/dev/xvda1 \
+-v /var/run:/var/run \
 -e "ZBX_SERVER_HOST={{zabbix_server}}" \
 zabbix/zabbix-agent:alpine-3.2-latest
 ExecStop=/usr/bin/docker stop zabbix-agent
