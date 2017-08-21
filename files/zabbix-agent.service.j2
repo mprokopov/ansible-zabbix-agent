@@ -4,7 +4,12 @@ After=docker.service
 Requires=docker.service
 
 [Service]
-ExecStartPre=-/usr/bin/docker kill zabbix-agent-xxl
-ExecStartPre=-/usr/bin/docker rm zabbix-agent-xxl
-ExecStart=/usr/bin/docker run  --name=zabbix-agent-xxl -p 10050:10050  -v /:/rootfs  -v /var/run:/var/run -e "ZA_Server={{zabbix_server}}"  monitoringartist/zabbix-agent-xxl-limited:latest
-ExecStop=/usr/bin/docker stop zabbix-agent-xxl
+ExecStartPre=-/usr/bin/docker kill zabbix-agent
+ExecStartPre=-/usr/bin/docker rm zabbix-agent
+ExecStart=/usr/bin/docker run  --name=zabbix-agent \
+--privileged \
+-p 10050:10050 \
+-v /:/rootfs  -v /var/run:/var/run \
+-e "ZBX_SERVER_HOST={{zabbix_server}}" \
+zabbix/zabbix-agent:alpine-3.2-latest
+ExecStop=/usr/bin/docker stop zabbix-agent
